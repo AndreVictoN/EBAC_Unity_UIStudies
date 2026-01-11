@@ -18,7 +18,7 @@ namespace Screens
         public ScreenType screenType;
         public List<Transform> listOfObjects;
         public List<Typer> listOfPhrases;
-        public bool startHided = false;
+        public bool startHid = false;
 
         [Header("Animation")]
         public float delayBetweenObjects = 0.5f;
@@ -26,7 +26,7 @@ namespace Screens
 
         private void Start()
         {
-            if (startHided) ForceHideObjects();
+            if (startHid) ForceHideObjects();
             else ForceShowObjects();
         }
 
