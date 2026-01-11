@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 
 namespace Screens
 {
@@ -16,6 +17,7 @@ namespace Screens
     {
         public ScreenType screenType;
         public List<Transform> listOfObjects;
+        public List<Typer> listOfPhrases;
         public bool startHided = false;
 
         [Header("Animation")]
@@ -29,14 +31,14 @@ namespace Screens
         }
 
         [Button]
-        protected virtual void Show()
+        public virtual void Show()
         {
             Debug.Log("Show");
             ShowObjects();
         }
 
         [Button]
-        protected virtual void Hide()
+        public virtual void Hide()
         {
             Debug.Log("Hide");
             ForceHideObjects();
@@ -47,10 +49,19 @@ namespace Screens
             for(int i = 0; i < listOfObjects.Count; i++)
             {
                 var obj = listOfObjects[i];
-                
+
+                if(obj.gameObject.GetComponent<TextMeshProUGUI>() != null) obj.gameObject.GetComponent<TextMeshProUGUI>().text = "";
+
                 obj.gameObject.SetActive(true);
                 obj.DOScale(Vector3.zero, animationDuration).From().SetDelay(i * delayBetweenObjects);
             }
+
+            Invoke(nameof(StartType), listOfPhrases.Count * delayBetweenObjects);
+        }
+
+        private void StartType()
+        { 
+            for(int i = 0; i < listOfPhrases.Count; i++) { listOfPhrases[i].StartTyping(); }
         }
 
         private void ForceHideObjects() => listOfObjects.ForEach(obj => obj.gameObject.SetActive(false));
